@@ -1,38 +1,258 @@
-.App {
-  text-align: center;
+/* 💖 Base styling */
+body {
+  margin: 0;
+  background: linear-gradient(to right, #e0f7fa, #fce4ec);
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* 🩵 Container */
+.app-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem;
+  background: #ffffffd9;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* 🌈 Top bar */
+.top-bar {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.top-bar h1 {
+  margin: 0;
+  color: #3b82f6;
+  font-size: 2rem;
+}
+
+.top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+/* 🔍 Search */
+.search-input {
+  flex-grow: 1;
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* ➕ Add */
+.add-btn {
+  padding: 0.6rem 1.2rem;
+  background-color: #3b82f6;
   color: white;
+  border: none;
+  font-size: 1rem;
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.add-btn:hover,
+.submit-btn:hover,
+.cancel-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.2s ease-in-out;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* 🧑‍🎓 Table */
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.student-table th,
+.student-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.student-table th {
+  background-color: #f3f4f6;
+}
+
+.student-table tr:hover {
+  background-color: #f9fafb;
+}
+
+/* ✏️ Action buttons */
+.edit-btn,
+.delete-btn {
+  padding: 0.4rem 0.8rem;
+  margin: 0 0.3rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.edit-btn {
+  background-color: #f59e0b;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background-color: #d97706;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+/* 💕 Modal styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30, 41, 59, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* ☁️ Modal popup smoothness */
+.modal {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+  animation: fadeIn 0.4s ease-out;
+  position: relative;
+}
+
+
+.modal h2 {
+  margin-bottom: 1.2rem;
+  color: #2563eb;
+}
+
+.modal input {
+  display: block;
+  margin-bottom: 0.7rem;
+  padding: 0.75rem;
+  width: 100%;
+  border-radius: 10px;
+  border: 1.5px solid #d1d5db;
+  font-size: 1rem;
+}
+/* 🧃 Modal buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.submit-btn {
+  background-color: #10b981;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.submit-btn:hover {
+  background-color: #059669;
+}
+
+.cancel-btn {
+  background-color: #9ca3af;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.cancel-btn:hover {
+  background-color: #6b7280;
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .top-bar {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+
+  .top-actions {
+    flex-direction: column;
   }
+
+  .student-table th,
+  .student-table td {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+}
+input {
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 6px #c4b5fd;
+  outline: none;
+}
+input.error {
+  border: 2px solid #f87171;
+  background-color: #ffe4e6;
+  animation: pulseError 0.3s ease-in-out;
+}
+.email-error-text {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  animation: shake 0.3s ease;
+}
+
+@keyframes pulseError {
+  0% { box-shadow: 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { box-shadow: 0 0 6px rgba(239, 68, 68, 0.7); }
+  100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0.7); }
+}
+input.error {
+  border: 2px solid #f87171;
+  background-color: #ffe4e6;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  animation: shake 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
