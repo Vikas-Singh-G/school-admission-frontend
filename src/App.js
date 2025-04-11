@@ -1,21 +1,34 @@
 // App.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import "./App.css";
+import {
+  fetchStudents,
+  addStudent,
+  updateStudent,
+  deleteStudent as deleteStudentAPI,
+} from "./api";
 
 function App() {
-  const [students, setStudents] = useState([
-    { id: 1, name: "Aarav Sharma", email: "aarav@example.com", className: "10A" },
-    { id: 2, name: "Isha Verma", email: "isha@example.com", className: "9B" },
-    { id: 3, name: "Rahul Desai", email: "rahul@example.com", className: "11C" },
-  ]);
+  const [students, setStudents] = useState([]);
+  const [formData, setFormData] = useState({name: "",email: "",className: "",age: "",gender: ""});
+  
 
-  const [formData, setFormData] = useState({ name: "", email: "", className: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [emailError, setEmailError] = useState("");
 
+  // 💡 Load students on component mount
+  useEffect(() => {
+    fetchStudents()
+      .then((res) => setStudents(res.data))
+      .catch((err) => console.error("Error fetching students 😿", err));
+  }, []);
+
+  // 💫 Form input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -23,6 +36,7 @@ function App() {
     });
   };
 
+  // 💌 Email format validation
   const handleEmailBlur = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
@@ -32,12 +46,23 @@ function App() {
     }
   };
 
-  const handleAddClick = () => {
-    setFormData({ name: "", email: "", className: "" });
+  // 🧼 Reset form fields
+  const resetForm = () => {
+    setFormData({ name: "", email: "", className: "", age: "", gender: "" });
     setIsEditing(false);
+    setEditId(null);
+    setShowModal(false);
+    setEmailError("");
+  };
+  
+
+  // ➕ Add button click
+  const handleAddClick = () => {
+    resetForm();
     setShowModal(true);
   };
 
+  // ✅ Add or Update student
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.className || emailError) {
@@ -45,37 +70,70 @@ function App() {
       return;
     }
 
+    const studentData = {
+      name: formData.name,
+      email: formData.email,
+      className: formData.className,
+      age: parseInt(formData.age),
+      gender: formData.gender
+    };
+    
+    
+    
+    
+
     if (isEditing) {
-      const updatedStudents = students.map((s) =>
-        s.id === editId ? { ...s, ...formData } : s
-      );
-      setStudents(updatedStudents);
+      updateStudent(editId, studentData)
+        .then(() => {
+          const updated = students.map((s) =>
+            s.id === editId ? { id: editId, ...studentData } : s
+          );
+          setStudents(updated);
+          resetForm();
+        })
+        .catch((err) => alert("Error updating student 😥"));
     } else {
-      const newStudent = {
-        id: students.length + 1,
-        ...formData,
-      };
-      setStudents([...students, newStudent]);
+      addStudent(studentData)
+        .then((res) => {
+          setStudents([...students, res.data]);
+          resetForm();
+        })
+        .catch((err) => alert("Error adding student 😥"));
     }
-
-    setFormData({ name: "", email: "", className: "" });
-    setIsEditing(false);
-    setEditId(null);
-    setShowModal(false);
+    
   };
 
-  const handleDelete = (id) => {
-    const updatedStudents = students.filter((s) => s.id !== id);
-    setStudents(updatedStudents);
+  // 🗑️ Delete student
+  const handleDelete = async (id, name) => {
+    const confirmed = window.confirm(`Really want to delete "${name}"? 🥺`);
+  
+    if (confirmed) {
+      try {
+        await deleteStudentAPI(id); // calls the API to delete
+        // Refresh local state
+        setStudents((prev) => prev.filter((s) => s.id !== id)); // updates UI immediately
+      } catch (error) {
+        console.error("Error deleting student:", error);
+      }
+    }
   };
+  
 
+  // ✏️ Edit student
   const handleEdit = (student) => {
-    setFormData({ name: student.name, email: student.email, className: student.className });
+    setFormData({
+      name: student.name,
+      email: student.email,
+      className: student.className,
+      age: student.age,
+     gender: student.gender
+    });
     setEditId(student.id);
     setIsEditing(true);
     setShowModal(true);
   };
 
+  // 🔍 Search filter
   const filteredStudents = students.filter((s) =>
     s.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -117,8 +175,12 @@ function App() {
               <td>{student.email}</td>
               <td>{student.className}</td>
               <td>
-                <button onClick={() => handleEdit(student)} className="edit-btn">✏️ Edit</button>
-                <button onClick={() => handleDelete(student.id)} className="delete-btn">❌ Delete</button>
+                <button onClick={() => handleEdit(student)} className="edit-btn">
+                  ✏️ Edit
+                </button>
+                <button onClick={() => handleDelete(student.id)} className="delete-btn">
+                  ❌ Delete
+                </button>
               </td>
             </tr>
           ))}
@@ -138,6 +200,27 @@ function App() {
                 onChange={handleChange}
                 required
               />
+              <input
+                name="age"
+                placeholder="Age"
+                type="number"
+                value={formData.age}
+                onChange={handleChange}
+                required
+              />
+
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+
               <input
                 name="email"
                 placeholder="Email"
