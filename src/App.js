@@ -1,6 +1,8 @@
 // App.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Banner from "./Banner";
+import Ticker from './components/Ticker';
 
 import "./App.css";
 import {
@@ -140,6 +142,8 @@ function App() {
 
   return (
     <div className="app-container">
+       <Banner />
+       <Ticker /> 
       <div className="top-bar">
         <h1>📘 Student Directory</h1>
         <div className="top-actions">
@@ -162,6 +166,8 @@ function App() {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
             <th>Email</th>
             <th>Class</th>
             <th>Actions</th>
@@ -172,6 +178,8 @@ function App() {
             <tr key={student.id}>
               <td>{student.id}</td>
               <td>{student.name}</td>
+              <td>{student.age}</td>
+              <td>{student.gender}</td>
               <td>{student.email}</td>
               <td>{student.className}</td>
               <td>

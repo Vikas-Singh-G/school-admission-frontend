@@ -1,0 +1,36 @@
+.ticker {
+    background: linear-gradient(to right, #ffecd2, #fcb69f);
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: inset 0 -1px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .ticker p {
+    display: inline-block;
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #222;
+    animation: scroll-left 20s linear infinite;
+    cursor: pointer;
+  }
+  
+  .ticker:hover p {
+    animation-play-state: paused; /* 💫 Pause on hover */
+  }
+  
+  .ticker p a {
+    color: #0077cc;
+    text-decoration: none;
+  }
+  
+  .ticker p a:hover {
+    text-decoration: underline;
+  }
+  
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(100%);
+    }
+  }
