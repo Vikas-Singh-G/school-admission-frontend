@@ -3,9 +3,11 @@ import './Ticker.css';
 
 const Ticker = () => {
   return (
-    <div className="">
+    <div className="ticker">
       <p>
-        📢 Welcome to the School Admission Portal! | 🎓 New student form is live! | 🚀 Check out the features added!
+        🔗 <a href="#features">New features added: Edit, Search, Confirm Delete</a> &nbsp; • &nbsp;
+        💡 Built using Java + React + MySQL 🚀 &nbsp; • &nbsp;
+        📣 Stay tuned for more updates!
       </p>
     </div>
   );
